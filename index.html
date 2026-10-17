@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="violet">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NovaTab</title>
+  <meta name="description" content="NovaTab – a premium personal browser start page.">
+  <meta name="theme-color" content="#070b16">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- SVG icon sprite -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+      <symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 7h9m4 0h3M4 17h3m4 0h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></symbol>
+      <symbol id="i-drop" viewBox="0 0 24 24"><path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11Z"/></symbol>
+      <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/></symbol>
+      <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    </defs>
+  </svg>
+
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="topbar">
+    <div class="brand"><span class="brand-mark" aria-hidden="true"></span>NovaTab</div>
+    <div class="top-actions">
+      <button class="icon-btn" id="themeBtn" type="button" aria-label="Change accent theme" title="Change accent theme"><svg class="ic"><use href="#i-drop"/></svg></button>
+      <button class="icon-btn" id="settingsBtn" type="button" aria-label="Open settings" title="Settings"><svg class="ic"><use href="#i-sliders"/></svg></button>
+      <button class="profile" id="profileBtn" type="button" aria-label="Profile and settings"><span id="initials">N</span></button>
+    </div>
+  </header>
+
+  <main id="main" class="wrap">
+    <section class="hero rise" aria-label="Greeting and clock">
+      <h1 class="greeting"><span id="greetText">Hello,</span> <span id="greetName" class="accent-text">Friend</span></h1>
+      <p class="subtitle" id="subtitle"></p>
+      <div class="clock" id="clock" aria-label="Current time">
+        <span id="clockTime">00:00:00</span><span class="meridiem" id="clockMeridiem">AM</span>
+      </div>
+      <p class="date" id="date"></p>
+    </section>
+
+    <form class="search rise" id="searchForm" role="search" style="--i:1" autocomplete="off">
+      <svg class="ic search-ic" aria-hidden="true"><use href="#i-search"/></svg>
+      <label class="sr" for="query">Search the web or enter a URL</label>
+      <input id="query" type="text" placeholder="Search the web or type a URL…" maxlength="500">
+      <label class="sr" for="engine">Search engine</label>
+      <select id="engine"></select>
+      <button class="btn primary" type="submit">Search</button>
+    </form>
+
+    <section class="rise" style="--i:2" aria-label="Shortcuts">
+      <div class="shortcuts" id="shortcutGrid"></div>
+    </section>
+
+    <div class="widgets">
+      <!-- Focus timer -->
+      <section class="card rise" style="--i:3" aria-labelledby="h-timer">
+        <div class="card-head"><h2 id="h-timer">Focus timer</h2><span class="pill" id="timerStatus">Ready</span></div>
+        <div class="modes" role="group" aria-label="Timer mode">
+          <button type="button" class="mode active" data-mode="25" aria-pressed="true">25 min</button>
+          <button type="button" class="mode" data-mode="45" aria-pressed="false">45 min</button>
+          <button type="button" class="mode" data-mode="60" aria-pressed="false">60 min</button>
+          <button type="button" class="mode" data-mode="break" aria-pressed="false">Break 5</button>
+        </div>
+        <div class="ring-wrap">
+          <svg class="ring" viewBox="0 0 120 120" aria-hidden="true">
+            <circle class="ring-bg" cx="60" cy="60" r="52"/>
+            <circle class="ring-fg" id="timerRing" cx="60" cy="60" r="52"/>
+          </svg>
+          <div class="ring-time" id="timerTime" role="timer" aria-live="off">25:00</div>
+        </div>
+        <div class="row center">
+          <button class="btn primary" id="timerToggle" type="button">Start</button>
+          <button class="btn" id="timerReset" type="button">Reset</button>
+        </div>
+        <button class="link-btn" id="notifyBtn" type="button" hidden>Enable browser notifications</button>
+      </section>
+
+      <!-- Tasks -->
+      <section class="card rise" style="--i:4" aria-labelledby="h-tasks">
+        <div class="card-head"><h2 id="h-tasks">Today’s tasks</h2><span class="pill" id="taskStats">0 of 0 · 0%</span></div>
+        <div class="bar" role="progressbar" aria-label="Task completion" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="taskProgress"><span id="taskBar"></span></div>
+        <form class="row" id="taskForm" autocomplete="off">
+          <label class="sr" for="taskInput">New task</label>
+          <input id="taskInput" type="text" maxlength="120" placeholder="Add a task for today…">
+          <button class="btn primary" type="submit">Add</button>
+        </form>
+        <ul class="tasks" id="taskList"></ul>
+        <p class="empty" id="taskEmpty">Nothing planned yet. Add your first task above.</p>
+        <p class="success" id="taskSuccess" hidden>All done — great work today.</p>
+      </section>
+
+      <!-- Notes -->
+      <section class="card rise" style="--i:5" aria-labelledby="h-notes">
+        <div class="card-head"><h2 id="h-notes">Quick notes</h2><span class="pill" id="noteStatus">Saved</span></div>
+        <label class="sr" for="notes">Quick notes</label>
+        <textarea id="notes" maxlength="2000" placeholder="Jot down anything — it saves automatically."></textarea>
+        <p class="meta"><span id="noteCount">0</span> / 2000 characters</p>
+      </section>
+
+      <!-- Weather -->
+      <section class="card rise" style="--i:6" aria-labelledby="h-weather">
+        <div class="card-head">
+          <h2 id="h-weather">Weather</h2>
+          <button class="icon-btn small" id="wxRefresh" type="button" aria-label="Refresh weather" title="Refresh"><svg class="ic"><use href="#i-refresh"/></svg></button>
+        </div>
+        <p class="state" id="wxLoading" role="status">Loading weather…</p>
+        <p class="state error" id="wxError" role="alert" hidden></p>
+        <div class="wx" id="wxBody" hidden>
+          <div class="wx-main">
+            <span class="wx-icon" id="wxIcon" aria-hidden="true"></span>
+            <div><div class="wx-temp" id="wxTemp"></div><div class="wx-desc" id="wxDesc"></div></div>
+          </div>
+          <p class="wx-place" id="wxPlace"></p>
+          <dl class="wx-stats">
+            <div><dt>Feels like</dt><dd id="wxFeels"></dd></div>
+            <div><dt>Humidity</dt><dd id="wxHumidity"></dd></div>
+            <div><dt>Wind</dt><dd id="wxWind"></dd></div>
+          </dl>
+        </div>
+      </section>
+    </div>
+
+    <section class="quote card rise" style="--i:7" aria-label="Motivational quote">
+      <blockquote><p id="quoteText"></p><footer id="quoteAuthor"></footer></blockquote>
+      <button class="icon-btn small" id="quoteBtn" type="button" aria-label="Show another quote" title="New quote"><svg class="ic"><use href="#i-refresh"/></svg></button>
+    </section>
+  </main>
+
+  <footer class="foot">NovaTab · Your data is stored only in this browser (localStorage) and doesn’t sync between devices.</footer>
+
+  <!-- Add shortcut -->
+  <dialog id="shortcutDlg" aria-labelledby="h-sc">
+    <form class="modal" id="shortcutForm" novalidate>
+      <h2 id="h-sc">Add shortcut</h2>
+      <div class="field"><label for="scName">Name</label><input id="scName" maxlength="24" required placeholder="e.g. Notion"></div>
+      <div class="field"><label for="scUrl">Website URL</label><input id="scUrl" maxlength="300" required placeholder="https://example.com"></div>
+      <p class="form-error" id="scError" role="alert"></p>
+      <div class="row end"><button class="btn" type="button" data-close>Cancel</button><button class="btn primary" type="submit">Add shortcut</button></div>
+    </form>
+  </dialog>
+
+  <!-- Settings -->
+  <dialog id="settingsDlg" aria-labelledby="h-set">
+    <form class="modal" id="settingsForm" novalidate>
+      <h2 id="h-set">Settings</h2>
+      <div class="field"><label for="setName">Your name</label><input id="setName" maxlength="30" required></div>
+      <div class="field"><label for="setSubtitle">Greeting subtitle</label><input id="setSubtitle" maxlength="60"></div>
+      <div class="field"><label for="setEngine">Default search engine</label><select id="setEngine"></select></div>
+      <div class="field"><label for="setCity">Weather city</label><input id="setCity" maxlength="60" required placeholder="e.g. Berlin"></div>
+      <p class="hint">Weather uses the city you type — precise location is never requested. Everything is saved locally in this browser only.</p>
+      <p class="form-error" id="setError" role="alert"></p>
+      <div class="row end"><button class="btn danger" type="button" id="resetBtn">Reset local data</button></div>
+      <div class="row end"><button class="btn" type="button" data-close>Cancel</button><button class="btn primary" type="submit">Save</button></div>
+    </form>
+  </dialog>
+
+  <!-- Confirm -->
+  <dialog id="confirmDlg" aria-labelledby="h-conf">
+    <form class="modal" method="dialog">
+      <h2 id="h-conf">Are you sure?</h2>
+      <p id="confirmMsg"></p>
+      <div class="row end"><button class="btn" value="cancel">Cancel</button><button class="btn danger" value="ok" id="confirmOk">Confirm</button></div>
+    </form>
+  </dialog>
+
+  <div class="toasts" id="toasts" aria-live="polite"></div>
+  <script src="script.js"></script>
+</body>
+</html>
